@@ -34,12 +34,12 @@ typedef struct {
 void set_colors(void);
 win_t *init(void);
 int win_close(win_t *);
-void run_game(win_t *);
+void run_game(win_t *, char *);
 
-map_t *mkmap(size_t const, size_t const);
-map_t *set_map(char **);
-
-char **check_map(char **);
 char **get_buf(char const *);
+
+map_t *fill_map(char **);
+void print_map(win_t *, map_t *);
+void destroy_map(map_t *);
 
 #endif

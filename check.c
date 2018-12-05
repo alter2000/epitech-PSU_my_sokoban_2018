@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-char **check_map(char **s)
+static char **check_map(char **s)
 {
     bool player = false;
     int boxes = 0;

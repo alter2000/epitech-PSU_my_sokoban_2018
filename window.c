@@ -63,11 +63,13 @@ void event(win_t *w)
     }
 }
 
-void run_game(win_t *w)
+void run_game(win_t *w, char *path)
 {
+    map_t *m = fill_map(get_buf(path));
     while (1) {
         event(w);
         refresh();
         sleep(1);
     }
+    destroy_map(m);
 }
