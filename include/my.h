@@ -67,10 +67,10 @@ int my_isprintable(char);
 
 char **my_str_to_word_array(char const *);
 char *my_strdup(char const *);
-void *my_memset(char *, short, size_t);
-void *my_nul(char *, size_t);
+void *my_memset(char *, char, size_t);
 char *my_realloc(char *, int);
 void *gib(size_t);
+void *regib(char *, int);
 
 int my_atoi(char const *);
 long long int my_atoll(char const *);

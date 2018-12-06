@@ -9,25 +9,33 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
+void sokoban_err(char **d, char *s)
+{
+    destroy_double_array(d);
+    write(2, s, my_strlen(s));
+    endwin();
+    exit(84);
+}
+
 static char **check_map(char **s)
 {
-    bool player = false;
+    bool dude = false;
     int boxes = 0;
 
-    while (s && *s && **s)
-        switch (**s) {
-            case 'O': boxes--;
-                break;
-            case 'X': boxes++;
-                break;
-            case 'P': player = (player) ? errm(s, "Two base states?\n") : true;
-                break;
-            case '\n': case '#': case ' ': (*s)++;
-                break;
-            default: errm(s, "Invalid map\n");
-        }
-    if (boxes)
-        errm(s, "Incorrect number of boxes and pads\n");
+    for (uint_t r = 0, c = 0; s && s[r] && s[r][c]; r++, c = 0)
+        for (; s[r][c]; c++)
+            switch (s[r][c]) {
+                case 'O': boxes--;
+                        break;
+                case 'X': boxes++;
+                        break;
+                case 'P': dude = !dude;
+                        break;
+                case '\n': case '#': case ' ': break;
+                default: sokoban_err(s, "Invalid map\n");
+            }
+    if (boxes) sokoban_err(s, "Incorrect number of boxes and pads\n");
+    if (!dude) sokoban_err(s, "There needs to be exactly one player\n");
     return s;
 }
 
@@ -44,7 +52,7 @@ char **get_buf(char const *path)
     fclose(f);
     f = fopen(path, "r");
     s = gib(ln);
-    for (size_t i = 0, n = 0; getline(&s[i++], &n, f) > 0; n = 0);
+    for (size_t i = 0, n = 0; getline(s + i, &n, f) > 0; n = 0, i++);
     fclose(f);
-    return check_map(s);
+    return check_map(s + 1);
 }

@@ -19,3 +19,8 @@ char *my_realloc(char *s, int extra)
     free(s);
     return newstr;
 }
+
+void *regib(char *s, int extra)
+{
+    return (void *)my_realloc(s, extra);
+}

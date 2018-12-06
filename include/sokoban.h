@@ -27,6 +27,7 @@ typedef struct {
     coord_t *boxen;
     coord_t *pads;
     uint_t boxnum;
+    uint_t padnum;
     coord_t max;
     char **m;
 } map_t;
@@ -34,6 +35,7 @@ typedef struct {
 void set_colors(void);
 win_t *init(void);
 int win_close(win_t *);
+void event(win_t *, map_t *);
 void run_game(win_t *, char *);
 
 char **get_buf(char const *);
@@ -41,5 +43,12 @@ char **get_buf(char const *);
 map_t *fill_map(char **);
 void print_map(win_t *, map_t *);
 void destroy_map(map_t *);
+coord_t *get_coords(char **, uint_t, char);
+coord_t add_elem(uint_t, uint_t);
+
+void go_left(win_t *, map_t *);
+void go_down(win_t *, map_t *);
+void go_up(win_t *, map_t *);
+void go_right(win_t *, map_t *);
 
 #endif

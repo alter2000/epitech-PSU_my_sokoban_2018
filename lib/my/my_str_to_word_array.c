@@ -64,7 +64,7 @@ int my_show_word_array(char const *tab[])
 {
     uint_t i = 0;
 
-    for (; tab[i]; i++) {
+    for (; tab[i] && *tab[i]; i++) {
         my_putstr(tab[i]);
         my_putchar('\n');
     }
@@ -73,7 +73,6 @@ int my_show_word_array(char const *tab[])
 
 void destroy_double_array(char **m)
 {
-    for (uint_t i = 0; m[i]; i++)
-        free(m[i]);
+    while (*m) free(*m++);
     free(m);
 }
