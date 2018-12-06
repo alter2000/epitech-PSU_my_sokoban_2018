@@ -2,7 +2,7 @@
 **/*.gc*
 **/libmy.a
 **/vgcore*
-push_swap
+my_sokoban
 idk.c
 *.m
 **/*.out
