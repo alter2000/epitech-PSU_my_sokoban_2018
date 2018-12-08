@@ -4,6 +4,7 @@
 **/vgcore*
 my_sokoban
 idk.c
+tags
 *.m
 **/*.out
 unit_tests
