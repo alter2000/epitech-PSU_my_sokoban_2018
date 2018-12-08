@@ -55,3 +55,16 @@ int check_stuck(map_t *m)
                 stuck++;
     return stuck;
 }
+
+char check_cells(char *c, char *n)
+{
+    if (c && *c == 'X')
+        if (n && (*n == 'O' || *n == ' '))
+            return 2;
+        else
+            return 0;
+    else if (c && (*c == ' ' || *c == 'O'))
+        return 1;
+    else
+        return 0;
+}
