@@ -61,11 +61,14 @@ char **get_buf(char const *path)
 
 bool check_solved(map_t *m)
 {
+    coord_t *boxes = get_coords(m->m, m->boxnum, 'X');
+    uint_t match = 0;
+
     for (uint_t i = 0; i < m->boxnum; i++)
         for (uint_t j = 0; j < m->padnum; j++)
-            if (m->boxen[i].x != m->pads[j].x)
-                return false;
-    return true;
+            if (boxes[i].x == m->pads[j].x && boxes[i].y == m->pads[j].y)
+                match++;
+    return match;
 }
 
 bool small_screen(win_t *w, map_t *m)

@@ -12,7 +12,6 @@ map_t *mkmap(char **map)
     map_t *m = gib(sizeof(*m));
 
     m->m = map;
-    m->boxen = gib((sizeof(*m->boxen) + 1) * m->boxnum);
     m->pads = gib((sizeof(*m->pads) + 1) * m->padnum);
     return m;
 }
@@ -27,7 +26,7 @@ void print_map(win_t *w, map_t *m)
 void destroy_map(map_t *m)
 {
     destroy_double_array(m->m);
-    free(m->boxen);
+    printw("\nkek idk\n");
     free(m->pads);
 }
 

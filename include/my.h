@@ -140,12 +140,15 @@ static inline size_t errc(char *buf, char const *errstr)
 
 static inline size_t errm(char **buf, char const *errstr)
 {
+    uint_t i = 0;
+
     if (!errstr || !buf || !*errstr || !*buf) {
         write(2, "errm: no error string or invalid buffer\n", 32);
         return 0;
     }
     write(2, errstr, my_strlen(errstr));
-    while (*buf++) free(*buf);
+    for (; buf[i]; i++) free(buf[i]);
+    free(buf[i]);
     free(buf);
     exit(84);
 }

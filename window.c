@@ -6,6 +6,7 @@
 */
 
 #include "sokoban.h"
+#include <sys/ioctl.h>
 
 void set_colors(void)
 {
@@ -37,44 +38,42 @@ win_t *init(void)
     return w;
 }
 
-int win_close(win_t *win)
-{
-    free(win);
-    endwin();
-    return 0;
-}
-
 void event(win_t *w, map_t *m, char **av)
 {
-    signal(SIGINT, sighandle);
-    signal(SIGWINCH, sighandle);
     switch (getch()) {
         case ' ': main(2, av);
         case KEY_LEFT: go_left(w, m);
-                       break;
+                        return;
         case KEY_DOWN: go_down(w, m);
-                       break;
+                        return;
         case KEY_UP: go_up(w, m);
-                     break;
+                        return;
         case KEY_RIGHT: go_right(w, m);
-                        break;
-        case 'q': win_close(w);
+                        return;
+        case 'q': endwin();
                   exit(0);
-        default: break;
+        default: return;
     }
 }
 
 void run_game(win_t *w, map_t *m, char **av)
 {
     while (1) {
-        clear();
+        reload_pads(m);
+        getmaxyx(stdscr, w->max.x, w->max.y);
         if (!small_screen(w, m))
             print_map(w, m);
-        event(w, m, av);
         refresh();
+printw("\npads:\t%u:%u\t%u:%u\t%u:%u\n", m->pads[0].x, m->pads[0].y, m->pads[1].x, m->pads[1].y, m->pads[2].x, m->pads[2].y);
+        event(w, m, av);
+        if (check_stuck(m)){
+            destroy_map(m);
+            endwin();
+            exit(1);
+        }
+        /* if (check_solved(m) == 0) */
+            /* break; */
         usleep(1000);
-        if (check_solved(m))
-            break;
     }
     destroy_map(m);
 }

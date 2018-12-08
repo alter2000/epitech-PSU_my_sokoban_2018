@@ -30,7 +30,6 @@ typedef struct {
 typedef struct {
     coord_t p;
     coord_t old;
-    coord_t *boxen;
     coord_t *pads;
     uint_t boxnum;
     uint_t padnum;
@@ -38,29 +37,34 @@ typedef struct {
     char **m;
 } map_t;
 
+void sokoban_err(char **d, char *s);
+char **get_buf(char const *path);
+bool check_solved(map_t *m);
+bool small_screen(win_t *w, map_t *m);
+
+map_t *mkmap(char **map);
+void print_map(win_t *w, map_t *m);
+void destroy_map(map_t *m);
+coord_t *get_coords(char **m, uint_t num, char elem);
+coord_t add_elem(uint_t x, uint_t y);
+
+map_t *fill_map(char **map);
+bool disgusting_neighbor_condition(char **c, uint_t y, uint_t x);
+int check_stuck(map_t *m);
+
+char check(char *c, char *n);
+void go_left(win_t *w, map_t *m);
+void go_down(win_t *w, map_t *m);
+void go_up(win_t *w, map_t *m);
+void go_right(win_t *w, map_t *m);
+
+void sighandle(int sig);
+
 void set_colors(void);
 win_t *init(void);
-int win_close(win_t *);
-void event(win_t *, map_t *, char **);
-void run_game(win_t *, map_t *, char **);
+void event(win_t *w, map_t *m, char **av);
+void run_game(win_t *w, map_t *m, char **av);
 
-char **get_buf(char const *);
-
-map_t *fill_map(char **);
-void print_map(win_t *, map_t *);
-void destroy_map(map_t *);
-coord_t *get_coords(char **, uint_t, char);
-coord_t add_elem(uint_t, uint_t);
-
-void go_left(win_t *, map_t *);
-void go_down(win_t *, map_t *);
-void go_up(win_t *, map_t *);
-void go_right(win_t *, map_t *);
-
-void sighandle(int);
-bool small_screen(win_t *, map_t *);
-bool check_solved(map_t *);
-
-int main(int, char **);
+int main(int ac, char **av);
 
 #endif

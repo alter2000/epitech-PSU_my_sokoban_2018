@@ -49,8 +49,15 @@ map_t *fill_map(char **map)
                 default: break;
             }
     m->old = m->p;
-    m->boxen = get_coords(m->m, m->boxnum, 'X');
     m->pads = get_coords(m->m, m->padnum, 'O');
     m->max.x = find_longest_line(m->m);
     return m;
+}
+
+void reload_pads(map_t *m)
+{
+    for (uint_t i = 0; i < m->padnum; i++)
+        if (m->m[m->pads[i].y][m->pads[i].x] != 'P' && \
+        m->m[m->pads[i].y][m->pads[i].x] != 'X' )
+            m->m[m->pads[i].y][m->pads[i].x] = 'O';
 }
