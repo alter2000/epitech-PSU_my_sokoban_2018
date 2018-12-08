@@ -6,20 +6,18 @@
 */
 
 #include "sokoban.h"
-#include <stdlib.h>
-#include <sys/stat.h>
 
 void sokoban_err(char **d, char *s)
 {
-    destroy_double_array(d);
     write(2, s, my_strlen(s));
+    destroy_double_array(d);
     endwin();
     exit(84);
 }
 
 static char **check_map(char **s)
 {
-    bool dude = false;
+    char dude = 0;
     int boxes = 0;
 
     for (uint_t r = 0, c = 0; s && s[r] && s[r][c]; r++, c = 0)
@@ -29,13 +27,13 @@ static char **check_map(char **s)
                         break;
                 case 'X': boxes++;
                         break;
-                case 'P': dude = !dude;
+                case 'P': dude++;
                         break;
                 case '\n': case '#': case ' ': break;
                 default: sokoban_err(s, "Invalid map\n");
             }
     if (boxes) sokoban_err(s, "Incorrect number of boxes and pads\n");
-    if (!dude) sokoban_err(s, "There needs to be exactly one player\n");
+    if (dude != 1) sokoban_err(s, "There needs to be exactly one player\n");
     return s;
 }
 
@@ -45,14 +43,40 @@ char **get_buf(char const *path)
     uint_t ln = 0;
     char **s = 0;
     char *p = 0;
+    size_t i = 0;
 
     if (!f)
         errb("Invalid path\n");
-    for (size_t m = 0; getline(&p, &m, f) != -1; p = 0, m = 0, ln++);
+    for (size_t m = 0; getline(&p, &m, f) != -1; free(p), m = 0, ln++) ;
     fclose(f);
     f = fopen(path, "r");
-    s = gib(ln);
-    for (size_t i = 0, n = 0; getline(s + i, &n, f) > 0; n = 0, i++);
+    s = gib(ln + 1);
+    for (size_t n = 0; getline(&p, &n, f) != -1; \
+            p = 0, n = 0, i++)
+        s[i] = my_strdup(p);
+    s[i] = 0;
     fclose(f);
-    return check_map(s + 1);
+    return check_map(s);
+}
+
+bool check_solved(map_t *m)
+{
+    for (uint_t i = 0; i < m->boxnum; i++)
+        for (uint_t j = 0; j < m->padnum; j++)
+            if (m->boxen[i].x != m->pads[j].x)
+                return false;
+    return true;
+}
+
+bool small_screen(win_t *w, map_t *m)
+{
+    char *msg[3] = { "Screen", "too", "small"};
+
+    if (m->max.x > w->max.x || m->max.y > w->max.y) {
+        for (uint_t i = 0; i < 3; i++)
+            mvaddstr((w->max.y / 2 - 2) + i, \
+                    (w->max.x - my_strlen(msg[i])) / 2, msg[i]);
+        return false;
+    }
+    return true;
 }

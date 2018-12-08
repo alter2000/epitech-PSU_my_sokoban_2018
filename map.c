@@ -6,18 +6,6 @@
 */
 
 #include "sokoban.h"
-#include <sys/stat.h>
-#include <stdio.h>
-#include <limits.h>
-
-coord_t add_elem(uint_t x, uint_t y)
-{
-    coord_t *i = malloc(sizeof(*i));
-
-    i->x = x;
-    i->y = y;
-    return *i;
-}
 
 static uint_t find_longest_line(char **m)
 {
@@ -32,22 +20,35 @@ static uint_t find_longest_line(char **m)
     return col;
 }
 
+static char **clear_nl(char **m)
+{
+    uint_t i = 0;
+
+    for (uint_t j = 0; m && m[i] && m[i][j]; i++, j = 0)
+        for (; m[i] && m[i][j]; j++)
+            if (m[i][j] == '\n')
+                m[i][j] = 0;
+    m[i] = 0;
+    return m;
+}
+
 map_t *fill_map(char **map)
 {
     map_t *m = gib(sizeof(*m));
 
-    m->m = map;
+    m->m = clear_nl(map);
     for (uint_t x = 0; m->m[m->max.y] && m->m[m->max.y][x]; m->max.y++, x = 0)
         for (; m->m[m->max.y][x]; x++)
             switch (m->m[m->max.y][x]) {
                 case 'X': m->boxnum++;
                         break;
-                case 'P': m->play = add_elem(x, m->max.y);
+                case 'P': m->p = add_elem(x, m->max.y);
                         break;
                 case 'O': m->padnum++;
                         break;
                 default: break;
             }
+    m->old = m->p;
     m->boxen = get_coords(m->m, m->boxnum, 'X');
     m->pads = get_coords(m->m, m->padnum, 'O');
     m->max.x = find_longest_line(m->m);

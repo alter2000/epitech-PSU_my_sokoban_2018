@@ -20,7 +20,6 @@ map_t *mkmap(char **map)
 void print_map(win_t *w, map_t *m)
 {
     for (uint_t i = 0; m->m[i] && *m->m[i]; i++) {
-        /* for (uint_t j = 0; m->m[i][j] && m->m[i][j] != '\n'; j++) */
         mvaddstr(i, 0, m->m[i]);
     }
 }
@@ -41,4 +40,13 @@ coord_t *get_coords(char **m, uint_t num, char elem)
             if (m[i][j] == elem)
                 coord[k++] = add_elem(j, i);
     return coord;
+}
+
+coord_t add_elem(uint_t x, uint_t y)
+{
+    coord_t *i = malloc(sizeof(*i));
+
+    i->x = x;
+    i->y = y;
+    return *i;
 }

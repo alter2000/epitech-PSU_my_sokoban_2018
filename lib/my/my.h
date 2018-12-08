@@ -130,7 +130,7 @@ static inline size_t errb(char const *errstr)
 static inline size_t errc(char *buf, char const *errstr)
 {
     if (!errstr || !*errstr || !buf || !*buf) {
-        write(2, "errc: no error string or buffer\n", 32);
+        write(2, "errc: no error string or invalid buffer\n", 32);
         return 0;
     }
     write(2, errstr, my_strlen(errstr));
@@ -141,7 +141,7 @@ static inline size_t errc(char *buf, char const *errstr)
 static inline size_t errm(char **buf, char const *errstr)
 {
     if (!errstr || !buf || !*errstr || !*buf) {
-        write(2, "errm: no error string or buffer\n", 32);
+        write(2, "errm: no error string or invalid buffer\n", 32);
         return 0;
     }
     write(2, errstr, my_strlen(errstr));

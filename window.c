@@ -5,24 +5,21 @@
 ** window manipulation
 */
 
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include "sokoban.h"
 
-/* void set_colors(void) */
-/* { */
-/*     if (has_colors()) { */
-/*         start_color(); */
-/*         init_pair(1, COLOR_RED,     COLOR_BLACK); */
-/*         init_pair(2, COLOR_GREEN,   COLOR_BLACK); */
-/*         init_pair(3, COLOR_YELLOW,  COLOR_BLACK); */
-/*         init_pair(4, COLOR_BLUE,    COLOR_BLACK); */
-/*         init_pair(5, COLOR_CYAN,    COLOR_BLACK); */
-/*         init_pair(6, COLOR_MAGENTA, COLOR_BLACK); */
-/*         init_pair(7, COLOR_WHITE,   COLOR_BLACK); */
-/*     } */
-/* } */
+void set_colors(void)
+{
+    if (has_colors()) {
+        start_color();
+        init_pair(1, COLOR_RED,     COLOR_BLACK);
+        init_pair(2, COLOR_GREEN,   COLOR_BLACK);
+        init_pair(3, COLOR_YELLOW,  COLOR_BLACK);
+        init_pair(4, COLOR_BLUE,    COLOR_BLACK);
+        init_pair(5, COLOR_CYAN,    COLOR_BLACK);
+        init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(7, COLOR_WHITE,   COLOR_BLACK);
+    }
+}
 
 win_t *init(void)
 {
@@ -47,10 +44,12 @@ int win_close(win_t *win)
     return 0;
 }
 
-void event(win_t *w, map_t *m)
+void event(win_t *w, map_t *m, char **av)
 {
+    signal(SIGINT, sighandle);
+    signal(SIGWINCH, sighandle);
     switch (getch()) {
-        case ' ': //close
+        case ' ': main(2, av);
         case KEY_LEFT: go_left(w, m);
                        break;
         case KEY_DOWN: go_down(w, m);
@@ -59,19 +58,23 @@ void event(win_t *w, map_t *m)
                      break;
         case KEY_RIGHT: go_right(w, m);
                         break;
+        case 'q': win_close(w);
+                  exit(0);
         default: break;
     }
 }
 
-void run_game(win_t *w, char *path)
+void run_game(win_t *w, map_t *m, char **av)
 {
-    map_t *m = fill_map(get_buf(path));
-
     while (1) {
-        event(w, m);
-        print_map(w, m);
+        clear();
+        if (!small_screen(w, m))
+            print_map(w, m);
+        event(w, m, av);
         refresh();
         usleep(1000);
+        if (check_solved(m))
+            break;
     }
     destroy_map(m);
 }

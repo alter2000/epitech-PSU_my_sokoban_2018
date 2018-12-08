@@ -8,13 +8,18 @@
 #ifndef SOKOBAN_H
 #define SOKOBAN_H
 
+#include <stdio.h>
 #include <curses.h>
+#include <limits.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+
 #include "my.h"
 
 typedef struct {
     uint_t x;
     uint_t y;
-    char b;
 } coord_t;
 
 typedef struct {
@@ -23,7 +28,8 @@ typedef struct {
 } win_t;
 
 typedef struct {
-    coord_t play;
+    coord_t p;
+    coord_t old;
     coord_t *boxen;
     coord_t *pads;
     uint_t boxnum;
@@ -35,8 +41,8 @@ typedef struct {
 void set_colors(void);
 win_t *init(void);
 int win_close(win_t *);
-void event(win_t *, map_t *);
-void run_game(win_t *, char *);
+void event(win_t *, map_t *, char **);
+void run_game(win_t *, map_t *, char **);
 
 char **get_buf(char const *);
 
@@ -50,5 +56,11 @@ void go_left(win_t *, map_t *);
 void go_down(win_t *, map_t *);
 void go_up(win_t *, map_t *);
 void go_right(win_t *, map_t *);
+
+void sighandle(int);
+bool small_screen(win_t *, map_t *);
+bool check_solved(map_t *);
+
+int main(int, char **);
 
 #endif
