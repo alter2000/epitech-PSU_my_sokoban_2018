@@ -14,6 +14,8 @@ void sighandle(int sig)
     switch (sig) {
         case SIGINT: endwin();
             exit(0);
+        case SIGSEGV: endwin();
+            exit(0);
         case SIGWINCH: endwin();
             refresh();
             clear();

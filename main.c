@@ -25,6 +25,7 @@ int main(int ac, char **av)
     map_t *m = fill_map(get_buf(av[1]));
 
     signal(SIGINT, sighandle);
+    signal(SIGSEGV, sighandle);
     signal(SIGWINCH, sighandle);
     run_game(win, m, av);
     free(win);
