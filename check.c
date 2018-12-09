@@ -50,7 +50,7 @@ char **get_buf(char const *path)
     for (size_t m = 0; getline(&p, &m, f) != -1; free(p), m = 0, ln++) ;
     fclose(f);
     f = fopen(path, "r");
-    s = gib(ln + 1);
+    s = gib(ln + 3);
     for (size_t n = 0; getline(&p, &n, f) != -1; \
             p = 0, n = 0, i++)
         s[i] = my_strdup(p);
@@ -74,12 +74,10 @@ uint_t check_solved(map_t *m)
 
 bool small_screen(win_t *w, map_t *m)
 {
-    char *msg[3] = {"Screen", "too", "small"};
+    char *msg = "Screen too small";
 
     if (m->max.x > w->max.x || m->max.y > w->max.y) {
-        for (uint_t i = 0; i < 3; i++)
-            mvaddstr((w->max.y / 2 - 2) + i, \
-                    (w->max.x - my_strlen(msg[i])) / 2, msg[i]);
+        mvaddstr((w->max.y / 2), (w->max.x - my_strlen(msg)) / 2, msg);
         return false;
     }
     return true;

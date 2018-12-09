@@ -28,7 +28,6 @@ int main(int ac, char **av)
     signal(SIGSEGV, sighandle);
     signal(SIGWINCH, sighandle);
     run_game(win, m, av);
-    free(win);
     endwin();
     return 0;
 }

@@ -33,7 +33,7 @@ win_t *init(void)
     curs_set(FALSE);
     intrflush(stdscr, FALSE);
     keypad(stdscr, TRUE);
-    getmaxyx(stdscr, w->max.x, w->max.y);
+    getmaxyx(stdscr, w->max.y, w->max.x);
     clear();
     return w;
 }
@@ -60,8 +60,8 @@ void run_game(win_t *w, map_t *m, char **av)
 {
     while (1) {
         reload_pads(m);
-        getmaxyx(stdscr, w->max.x, w->max.y);
-        if (!small_screen(w, m))
+        getmaxyx(stdscr, w->max.y, w->max.x);
+        if (small_screen(w, m))
             print_map(w, m);
         refresh();
         event(w, m, av);
@@ -71,7 +71,8 @@ void run_game(win_t *w, map_t *m, char **av)
             exit(1);
         } else if (check_solved(m) == m->padnum)
             break;
-        usleep(1000);
+        usleep(700);
     }
     destroy_map(m);
+    free(w);
 }

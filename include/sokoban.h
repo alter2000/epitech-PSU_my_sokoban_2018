@@ -29,7 +29,6 @@ typedef struct {
 
 typedef struct {
     coord_t p;
-    coord_t old;
     coord_t *pads;
     uint_t boxnum;
     uint_t padnum;

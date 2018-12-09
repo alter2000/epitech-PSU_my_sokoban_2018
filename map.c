@@ -48,7 +48,6 @@ map_t *fill_map(char **map)
                         break;
                 default: break;
             }
-    m->old = m->p;
     m->pads = get_coords(m->m, m->padnum, 'O');
     m->max.x = find_longest_line(m->m);
     return m;
