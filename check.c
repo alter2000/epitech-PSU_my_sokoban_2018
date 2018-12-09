@@ -66,8 +66,12 @@ bool check_solved(map_t *m)
 
     for (uint_t i = 0; i < m->boxnum; i++)
         for (uint_t j = 0; j < m->padnum; j++)
-            if (boxes[i].x == m->pads[j].x && boxes[i].y == m->pads[j].y)
+            if (boxes[i].x == m->pads[j].x && boxes[i].y == m->pads[j].y) {
                 match++;
+/* printw("boxes:\t%u:%u\t%u:%u\t%u:%u\n", boxes[0].x, boxes[0].y, boxes[1].x, boxes[1].y, boxes[2].x, boxes[2].y); */
+printw("pads:\t%u:%u\t%u:%u\t%u:%u\n", m->pads[0].x, m->pads[0].y, m->pads[1].x, m->pads[1].y, m->pads[2].x, m->pads[2].y);
+printw("padnum:\t%u\t\tmatch: %u\n", m->padnum, match);
+            }
     return match;
 }
 

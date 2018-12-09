@@ -65,14 +65,14 @@ void run_game(win_t *w, map_t *m, char **av)
             print_map(w, m);
         refresh();
 printw("\npads:\t%u:%u\t%u:%u\t%u:%u\n", m->pads[0].x, m->pads[0].y, m->pads[1].x, m->pads[1].y, m->pads[2].x, m->pads[2].y);
+printw("\nplayer:\t%u:%u\n", m->p.x, m->p.y);
         event(w, m, av);
-        if (check_stuck(m)){
+        if (check_stuck(m) == m->padnum){
             destroy_map(m);
             endwin();
             exit(1);
-        }
-        /* if (check_solved(m) == 0) */
-            /* break; */
+        } else if (check_solved(m) == m->padnum)
+            break;
         usleep(1000);
     }
     destroy_map(m);

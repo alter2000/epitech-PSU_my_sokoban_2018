@@ -22,36 +22,34 @@ void sighandle(int sig)
     }
 }
 
-bool disgusting_neighbor_condition(char **c, uint_t y, uint_t x)
+bool disgusting_neighbor_condition(map_t *m, uint_t y, uint_t x)
 {
-    if (c[y][x] == 'X' && \
-    (((c[y - 1][x] == '#' && c[y][x - 1] == '#') || \
-    (c[y - 1][x] == 'X' && c[y][x - 1] == 'X') || \
-    (c[y - 1][x] == '#' && c[y][x - 1] == 'X') || \
-    (c[y - 1][x] == 'X' && c[y][x - 1] == '#')) || \
-    ((c[y - 1][x] == '#' && c[y][x + 1] == '#') || \
-    (c[y - 1][x] == 'X' && c[y][x + 1] == 'X') || \
-    (c[y - 1][x] == '#' && c[y][x + 1] == 'X') || \
-    (c[y - 1][x] == 'X' && c[y][x + 1] == '#')) || \
-    ((c[y + 1][x] == '#' && c[y][x + 1] == '#') || \
-    (c[y + 1][x] == 'X' && c[y][x + 1] == 'X') || \
-    (c[y + 1][x] == '#' && c[y][x + 1] == 'X') || \
-    (c[y + 1][x] == 'X' && c[y][x + 1] == '#')) || \
-    ((c[y + 1][x] == '#' && c[y][x - 1] == '#') || \
-    (c[y + 1][x] == 'X' && c[y][x - 1] == 'X') || \
-    (c[y + 1][x] == '#' && c[y][x - 1] == 'X') || \
-    (c[y + 1][x] == 'X' && c[y][x - 1] == '#'))))
-        return true;
-    return false;
+    return (m->m[y][x] == 'X' && \
+    (((m->m[y - 1][x] == '#' && m->m[y][x - 1] == '#') || \
+    (m->m[y - 1][x] == 'X' && m->m[y][x - 1] == 'X') || \
+    (m->m[y - 1][x] == '#' && m->m[y][x - 1] == 'X') || \
+    (m->m[y - 1][x] == 'X' && m->m[y][x - 1] == '#')) || \
+    ((m->m[y - 1][x] == '#' && m->m[y][x + 1] == '#') || \
+    (m->m[y - 1][x] == 'X' && m->m[y][x + 1] == 'X') || \
+    (m->m[y - 1][x] == '#' && m->m[y][x + 1] == 'X') || \
+    (m->m[y - 1][x] == 'X' && m->m[y][x + 1] == '#')) || \
+    ((m->m[y + 1][x] == '#' && m->m[y][x + 1] == '#') || \
+    (m->m[y + 1][x] == 'X' && m->m[y][x + 1] == 'X') || \
+    (m->m[y + 1][x] == '#' && m->m[y][x + 1] == 'X') || \
+    (m->m[y + 1][x] == 'X' && m->m[y][x + 1] == '#')) || \
+    ((m->m[y + 1][x] == '#' && m->m[y][x - 1] == '#') || \
+    (m->m[y + 1][x] == 'X' && m->m[y][x - 1] == 'X') || \
+    (m->m[y + 1][x] == '#' && m->m[y][x - 1] == 'X') || \
+    (m->m[y + 1][x] == 'X' && m->m[y][x - 1] == '#'))));
 }
 
-int check_stuck(map_t *m)
+uint_t check_stuck(map_t *m)
 {
     uint_t stuck = 0;
 
     for (uint_t i = 1, j = 1; m->m[i + 1] && *m->m[i + 1]; i++, j = 1)
         for (; m->m[i + 1][j + 1]; j++)
-            if (disgusting_neighbor_condition(m->m, i, j))
+            if (disgusting_neighbor_condition(m, i, j))
                 stuck++;
     return stuck;
 }

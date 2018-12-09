@@ -29,7 +29,9 @@ fclean: clean
 	@rm -f $(NAME) unit_tests
 	@$(MAKE) -C ./lib/my fclean
 
-re: fclean $(NAME)
+re: fclean
+	@$(MAKE) -C ./lib/my
+	@gcc -o $(NAME) $(SRC) $(CFLAGS)
 
 tests_run:
 	@$(MAKE) -C ./lib/my

@@ -56,9 +56,9 @@ void reload_pads(map_t *m);
 
 // more_check.c
 void sighandle(int sig);
-bool disgusting_neighbor_condition(char **c, uint_t y, uint_t x);
-int check_stuck(map_t *m);
-char check(char *c, char *n);
+bool disgusting_neighbor_condition(map_t *, uint_t, uint_t);
+uint_t check_stuck(map_t *m);
+char check_cells(char *c, char *n);
 
 // movement.c
 void go_left(win_t *w, map_t *m);
