@@ -9,9 +9,9 @@
 
 void sokoban_err(char **d, char *s)
 {
+    endwin();
     write(2, s, my_strlen(s));
     destroy_double_array(d);
-    endwin();
     exit(84);
 }
 
