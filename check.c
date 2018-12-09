@@ -59,7 +59,7 @@ char **get_buf(char const *path)
     return check_map(s);
 }
 
-bool check_solved(map_t *m)
+uint_t check_solved(map_t *m)
 {
     coord_t *boxes = get_coords(m->m, m->boxnum, 'X');
     uint_t match = 0;
@@ -68,16 +68,13 @@ bool check_solved(map_t *m)
         for (uint_t j = 0; j < m->padnum; j++)
             if (boxes[i].x == m->pads[j].x && boxes[i].y == m->pads[j].y) {
                 match++;
-/* printw("boxes:\t%u:%u\t%u:%u\t%u:%u\n", boxes[0].x, boxes[0].y, boxes[1].x, boxes[1].y, boxes[2].x, boxes[2].y); */
-printw("pads:\t%u:%u\t%u:%u\t%u:%u\n", m->pads[0].x, m->pads[0].y, m->pads[1].x, m->pads[1].y, m->pads[2].x, m->pads[2].y);
-printw("padnum:\t%u\t\tmatch: %u\n", m->padnum, match);
             }
     return match;
 }
 
 bool small_screen(win_t *w, map_t *m)
 {
-    char *msg[3] = { "Screen", "too", "small"};
+    char *msg[3] = {"Screen", "too", "small"};
 
     if (m->max.x > w->max.x || m->max.y > w->max.y) {
         for (uint_t i = 0; i < 3; i++)

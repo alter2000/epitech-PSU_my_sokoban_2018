@@ -40,7 +40,7 @@ typedef struct {
 // check.c
 void sokoban_err(char **d, char *s);
 char **get_buf(char const *path);
-bool check_solved(map_t *m);
+uint_t check_solved(map_t *m);
 bool small_screen(win_t *w, map_t *m);
 
 // handle_map.c

@@ -64,8 +64,6 @@ void run_game(win_t *w, map_t *m, char **av)
         if (!small_screen(w, m))
             print_map(w, m);
         refresh();
-printw("\npads:\t%u:%u\t%u:%u\t%u:%u\n", m->pads[0].x, m->pads[0].y, m->pads[1].x, m->pads[1].y, m->pads[2].x, m->pads[2].y);
-printw("\nplayer:\t%u:%u\n", m->p.x, m->p.y);
         event(w, m, av);
         if (check_stuck(m) == m->padnum){
             destroy_map(m);
