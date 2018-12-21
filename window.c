@@ -51,7 +51,7 @@ void event(win_t *w, map_t *m, char **av)
         case KEY_RIGHT: go_right(w, m);
                         return;
         case 'q': endwin();
-                  exit(0);
+                exit(0);
         default: return;
     }
 }

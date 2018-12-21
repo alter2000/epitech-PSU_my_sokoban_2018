@@ -26,7 +26,6 @@ void print_map(win_t *w, map_t *m)
 void destroy_map(map_t *m)
 {
     destroy_double_array(m->m);
-    printw("\nkek idk\n");
     free(m->pads);
 }
 
@@ -34,7 +33,7 @@ coord_t *get_coords(char **m, uint_t num, char elem)
 {
     coord_t *coord = gib(sizeof(coord_t) * (1 + num));
 
-    for (uint_t i = 0, j = 0, k = 0; m && m[i] && m[i][j]; i++, j = 0) 
+    for (uint_t i = 0, j = 0, k = 0; m && m[i] && m[i][j]; i++, j = 0)
         for (; m[i][j]; j++)
             if (m[i][j] == elem)
                 coord[k++] = add_elem(j, i);
